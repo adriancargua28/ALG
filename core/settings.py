@@ -4,6 +4,7 @@ Configuración de Django para el portal profesional de Adriana Lara Gutiérrez.
 Toda la configuración sensible se lee de variables de entorno (ver README.md).
 """
 import os
+import urllib.parse
 from pathlib import Path
 
 from django.core.exceptions import ImproperlyConfigured
@@ -25,8 +26,9 @@ def _env_list(name, default=""):
 # --------------------------------------------------------------------------
 # Núcleo
 # --------------------------------------------------------------------------
-DEBUG = os.getenv("DJANGO_DEBUG", "1").lower() in {"1", "true", "yes"}
-SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", "django-insecure-alg-local-dev-key-123456789")
+DEBUG = _env_bool("DJANGO_DEBUG", False)
+
+SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", "")
 if not SECRET_KEY:
     if DEBUG:
         SECRET_KEY = "django-insecure-solo-para-desarrollo-local-no-usar-en-produccion"
@@ -85,14 +87,32 @@ WSGI_APPLICATION = "core.wsgi.application"
 ASGI_APPLICATION = "core.asgi.application"
 
 # --------------------------------------------------------------------------
-# Base de datos (SQLite: sin dependencias adicionales y multiplataforma)
+# Base de datos
+# Con POSTGRES_URL o DATABASE_URL (Vercel + Supabase, Neon...) usa PostgreSQL;
+# sin ellas usa SQLite, que basta para trabajar en local.
 # --------------------------------------------------------------------------
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": os.environ.get("DJANGO_DB_PATH", str(BASE_DIR / "db.sqlite3")),
+_db_url = os.environ.get("POSTGRES_URL") or os.environ.get("DATABASE_URL")
+if _db_url:
+    _u = urllib.parse.urlparse(_db_url)
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.postgresql",
+            "NAME": _u.path.lstrip("/"),
+            "USER": urllib.parse.unquote(_u.username or ""),
+            "PASSWORD": urllib.parse.unquote(_u.password or ""),
+            "HOST": _u.hostname,
+            "PORT": _u.port or 5432,
+            "OPTIONS": {"sslmode": "require", "prepare_threshold": None},
+            "DISABLE_SERVER_SIDE_CURSORS": True,
+        }
     }
-}
+else:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": os.environ.get("DJANGO_DB_PATH", str(BASE_DIR / "db.sqlite3")),
+        }
+    }
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
@@ -117,6 +137,10 @@ USE_TZ = True
 STATIC_URL = "static/"
 STATICFILES_DIRS = [BASE_DIR / "static"]
 STATIC_ROOT = BASE_DIR / "staticfiles"
+
+# Si falta una entrada del manifiesto de estáticos, se sirve el nombre sin hash
+# en lugar de devolver un error 500.
+WHITENOISE_MANIFEST_STRICT = False
 
 STORAGES = {
     "default": {"BACKEND": "django.core.files.storage.FileSystemStorage"},
