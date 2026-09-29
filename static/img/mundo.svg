@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800">
+<defs>
+  <radialGradient id="esfera" cx="0.38" cy="0.35" r="0.75">
+    <stop offset="0" stop-color="#6FA0FF" stop-opacity="0.22"/>
+    <stop offset="1" stop-color="#6FA0FF" stop-opacity="0.02"/>
+  </radialGradient>
+</defs>
+<style>
+  .ruta { stroke-dasharray: 6 10; animation: flujo 14s linear infinite; }
+  @keyframes flujo { to { stroke-dashoffset: -320; } }
+  @media (prefers-reduced-motion: reduce) { .ruta { animation: none; } }
+</style>
+<circle cx="400" cy="400" r="320" fill="url(#esfera)" stroke="#6FA0FF" stroke-opacity="0.55" stroke-width="1.6"/>
+<g transform="rotate(-23 400 400)" fill="none" stroke="#6FA0FF" stroke-opacity="0.30" stroke-width="1.2">
+<ellipse cx="400" cy="400" rx="82.8" ry="320"/>
+<ellipse cx="400" cy="400" rx="160.0" ry="320"/>
+<ellipse cx="400" cy="400" rx="226.3" ry="320"/>
+<ellipse cx="400" cy="400" rx="277.1" ry="320"/>
+<ellipse cx="400" cy="400" rx="309.1" ry="320"/>
+<ellipse cx="400" cy="400" rx="320.0" ry="320"/>
+<ellipse cx="400" cy="400" rx="309.1" ry="320"/>
+<ellipse cx="400" cy="400" rx="277.1" ry="320"/>
+<ellipse cx="400" cy="400" rx="226.3" ry="320"/>
+<ellipse cx="400" cy="400" rx="160.0" ry="320"/>
+<ellipse cx="400" cy="400" rx="82.8" ry="320"/>
+<ellipse cx="400" cy="699.9" rx="82.8" ry="20.0"/>
+<ellipse cx="400" cy="668.9" rx="160.0" ry="38.7"/>
+<ellipse cx="400" cy="619.6" rx="226.3" ry="54.7"/>
+<ellipse cx="400" cy="555.2" rx="277.1" ry="67.0"/>
+<ellipse cx="400" cy="480.4" rx="309.1" ry="74.8"/>
+<ellipse cx="400" cy="400.0" rx="320.0" ry="77.4"/>
+<ellipse cx="400" cy="319.6" rx="309.1" ry="74.8"/>
+<ellipse cx="400" cy="244.8" rx="277.1" ry="67.0"/>
+<ellipse cx="400" cy="180.4" rx="226.3" ry="54.7"/>
+<ellipse cx="400" cy="131.1" rx="160.0" ry="38.7"/>
+<ellipse cx="400" cy="100.1" rx="82.8" ry="20.0"/>
+</g>
+<g fill="none" stroke="#C9A45C" stroke-opacity="0.85" stroke-width="1.8">
+<path class="ruta" d="M250 330 Q405 175 560 300"/>
+<path class="ruta" d="M300 470 Q410 405 520 520"/>
+<path class="ruta" d="M250 330 Q290 385 330 560"/>
+<path class="ruta" d="M560 300 Q540 330 520 520"/>
+</g>
+<g fill="#C9A45C">
+<circle cx="250" cy="330" r="5"/><circle cx="250" cy="330" r="11" fill="none" stroke="#C9A45C" stroke-opacity="0.5"/>
+<circle cx="560" cy="300" r="5"/><circle cx="560" cy="300" r="11" fill="none" stroke="#C9A45C" stroke-opacity="0.5"/>
+<circle cx="300" cy="470" r="5"/><circle cx="300" cy="470" r="11" fill="none" stroke="#C9A45C" stroke-opacity="0.5"/>
+<circle cx="520" cy="520" r="5"/><circle cx="520" cy="520" r="11" fill="none" stroke="#C9A45C" stroke-opacity="0.5"/>
+<circle cx="330" cy="560" r="5"/><circle cx="330" cy="560" r="11" fill="none" stroke="#C9A45C" stroke-opacity="0.5"/>
+</g></svg>

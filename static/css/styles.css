@@ -1,0 +1,1313 @@
+/* ==========================================================================
+   Portal profesional · Adriana Lara Gutiérrez
+   CSS3 puro, sin scripts. Movimiento resuelto con:
+   - animaciones ligadas al scroll (animation-timeline: view() / scroll())
+   - @keyframes con steps() para el efecto de escritura
+   - <details>/<summary>, radios + :checked, :hover y :focus-visible
+   Los efectos de scroll están dentro de @supports: en navegadores sin
+   soporte la página se ve completa, simplemente sin ese movimiento.
+
+   Índice
+    1. Tokens               8. Marquesina
+    2. Base                 9. Secciones
+    3. Utilidades          10. Filtro y áreas
+    4. Progreso y cabecera 11. Franjas con imagen
+    5. Portada             12. Enfoque y cronología
+    6. Ficha y sello       13. Contacto y pie
+    7. Botones             14. Scroll, responsive, accesibilidad, impresión
+   ========================================================================== */
+
+/* 1. Tokens ---------------------------------------------------------------- */
+:root {
+  --fondo: #0a0f1a;
+  --fondo-2: #0e1524;
+  --panel: rgba(255, 255, 255, 0.04);
+  --panel-fuerte: rgba(255, 255, 255, 0.07);
+  --linea: rgba(255, 255, 255, 0.11);
+  --linea-fuerte: rgba(255, 255, 255, 0.22);
+  --texto: #e7ebf1;
+  --suave: #a9b3c2;
+  --oro: #c9a45c;
+  --oro-claro: #f0d9a0;
+  --azul: #6fa0ff;
+  --azul-claro: #a9c4ff;
+  --sobre-oro: #14100a;
+
+  --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "URW Palladio L",
+    "Book Antiqua", Georgia, serif;
+  --sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial,
+    sans-serif;
+  --mono: ui-monospace, "SF Mono", "Cascadia Code", Consolas, "Liberation Mono",
+    monospace;
+
+  --contenedor: 72rem;
+  --curva: cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+/* 2. Base ------------------------------------------------------------------ */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-block-start: 5rem;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--fondo);
+  color: var(--texto);
+  font-family: var(--sans);
+  font-size: 1.0625rem;
+  line-height: 1.65;
+  text-rendering: optimizeLegibility;
+}
+
+h1, h2, h3, h4, p, dl, dd, ol, ul, fieldset, figure {
+  margin: 0;
+}
+
+ul, ol {
+  padding: 0;
+  list-style: none;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--serif);
+  font-weight: 600;
+  line-height: 1.15;
+}
+
+a {
+  color: var(--azul-claro);
+  text-underline-offset: 0.2em;
+}
+
+::selection {
+  background: rgba(201, 164, 92, 0.35);
+  color: #ffffff;
+}
+
+.contenedor {
+  inline-size: 100%;
+  max-inline-size: var(--contenedor);
+  margin-inline: auto;
+  padding-inline: clamp(1.25rem, 5vw, 3rem);
+}
+
+.prose {
+  max-inline-size: 62ch;
+}
+
+.prose > * + * {
+  margin-block-start: 1em;
+}
+
+/* 3. Utilidades ------------------------------------------------------------ */
+:focus-visible {
+  outline: 3px solid var(--oro-claro);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+.salto {
+  position: absolute;
+  inset-inline-start: 1rem;
+  inset-block-start: -4rem;
+  z-index: 100;
+  padding: 0.6rem 1rem;
+  background: var(--oro);
+  color: var(--sobre-oro);
+  font-weight: 600;
+  border-radius: 8px;
+}
+
+.salto:focus {
+  inset-block-start: 1rem;
+}
+
+.solo-lector {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+.es-provisional {
+  padding-inline: 0.35em;
+  background: rgba(201, 164, 92, 0.12);
+  color: var(--oro-claro);
+  font-style: italic;
+  border-block-end: 1px dashed var(--oro);
+}
+
+.hito__institucion.es-provisional,
+.hito__descripcion.es-provisional {
+  display: inline-block;
+}
+
+.vacio {
+  color: var(--suave);
+  font-style: italic;
+}
+
+/* 4. Progreso y cabecera --------------------------------------------------- */
+.progreso {
+  display: none;
+}
+
+.cabecera {
+  position: sticky;
+  inset-block-start: 0;
+  z-index: 50;
+  background: rgba(10, 15, 26, 0.5);
+  border-block-end: 1px solid transparent;
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+  backdrop-filter: blur(14px) saturate(140%);
+}
+
+.cabecera__interior {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem 2rem;
+  padding-block: 1.1rem;
+}
+
+.marca {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: var(--texto);
+  text-decoration: none;
+}
+
+.marca__sigla {
+  display: inline-grid;
+  place-items: center;
+  inline-size: 2.5rem;
+  block-size: 2.5rem;
+  border: 1px solid var(--oro);
+  border-radius: 8px;
+  color: var(--oro-claro);
+  font-family: var(--serif);
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.marca__nombre {
+  font-family: var(--serif);
+  font-size: 1.15rem;
+  font-weight: 600;
+}
+
+.menu {
+  max-inline-size: 100%;
+  overflow-x: auto;
+}
+
+.menu ul {
+  display: flex;
+  gap: 1.75rem;
+  white-space: nowrap;
+}
+
+.menu a {
+  display: inline-block;
+  padding-block: 0.45rem;
+  color: var(--suave);
+  font-size: 1rem;
+  text-decoration: none;
+  background: linear-gradient(var(--oro), var(--oro)) left bottom / 0 2px no-repeat;
+  transition: color 0.2s, background-size 0.3s var(--curva);
+}
+
+.menu a:hover {
+  color: var(--texto);
+  background-size: 100% 2px;
+}
+
+/* 5. Portada --------------------------------------------------------------- */
+.hero {
+  position: relative;
+  display: grid;
+  align-items: center;
+  min-block-size: calc(100vh - 4.6rem);
+  min-block-size: calc(100svh - 4.6rem);
+  overflow: clip;
+}
+
+.hero__fondo {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(60rem 40rem at 12% 8%, rgba(111, 160, 255, 0.16), transparent 62%),
+    radial-gradient(50rem 36rem at 92% 92%, rgba(201, 164, 92, 0.14), transparent 62%);
+}
+
+.hero__malla {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(var(--linea) 1px, transparent 1px),
+    linear-gradient(90deg, var(--linea) 1px, transparent 1px);
+  background-size: 56px 56px;
+  opacity: 0.35;
+  -webkit-mask-image: radial-gradient(ellipse at 30% 30%, #000 15%, transparent 72%);
+  mask-image: radial-gradient(ellipse at 30% 30%, #000 15%, transparent 72%);
+}
+
+.hero__mundo {
+  position: absolute;
+  inset-block-start: 50%;
+  inset-inline-end: -9rem;
+  inline-size: clamp(28rem, 54vw, 52rem);
+  aspect-ratio: 1;
+  translate: 0 -50%;
+  background: url("../img/mundo.svg") center / contain no-repeat;
+  opacity: 0.6;
+  animation: giro 180s linear infinite;
+}
+
+.hero__juzgado {
+  position: absolute;
+  inset-inline: 0;
+  inset-block-end: 0;
+  block-size: min(62vh, 36rem);
+  background: url("../img/juzgado.svg") center bottom / cover no-repeat;
+  opacity: 0.3;
+  -webkit-mask-image: linear-gradient(to top, #000 25%, transparent 100%);
+  mask-image: linear-gradient(to top, #000 25%, transparent 100%);
+}
+
+.hero__interior {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+  gap: clamp(2rem, 5vw, 4.5rem);
+  align-items: center;
+  padding-block: clamp(2rem, 4.5vw, 3.75rem);
+}
+
+.hero__texto > * {
+  animation: entra 0.9s var(--curva) both;
+}
+
+.hero__texto > :nth-child(1) { animation-delay: 0.05s; }
+.hero__texto > :nth-child(2) { animation-delay: 0.15s; }
+.hero__texto > :nth-child(3) { animation-delay: 0.3s; }
+.hero__texto > :nth-child(4) { animation-delay: 0.42s; }
+.hero__texto > :nth-child(5) { animation-delay: 0.54s; }
+.hero__texto > :nth-child(6) { animation-delay: 0.66s; }
+
+.pildora {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.45rem 1.05rem;
+  background: rgba(201, 164, 92, 0.08);
+  border: 1px solid rgba(201, 164, 92, 0.4);
+  border-radius: 999px;
+  color: var(--oro-claro);
+  font-size: 0.9375rem;
+  line-height: 1.3;
+}
+
+.pildora__punto {
+  inline-size: 0.5rem;
+  block-size: 0.5rem;
+  border-radius: 50%;
+  background: var(--oro-claro);
+  animation: pulso 2.4s ease-out infinite;
+}
+
+.hero__nombre {
+  margin-block-start: 1.25rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.02;
+}
+
+.hero__saludo {
+  display: block;
+  margin-block-end: 0.15em;
+  font-size: clamp(1.75rem, 3.4vw, 2.6rem);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.hero__degradado {
+  display: block;
+  font-size: clamp(2.75rem, 6vw, 4.9rem);
+  color: var(--oro-claro);
+  background: linear-gradient(100deg, var(--azul) 0%, #dce6f5 45%, var(--oro-claro) 70%, var(--azul) 100%);
+  background-size: 220% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: gradiente 12s ease-in-out infinite alternate;
+  text-wrap: balance;
+}
+
+.escribe {
+  display: grid;
+  justify-content: start;
+  align-items: center;
+  block-size: 1.9em;
+  margin-block-start: 1rem;
+  color: var(--azul-claro);
+  font-family: var(--mono);
+  font-size: clamp(1.05rem, 2.3vw, 1.5rem);
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.escribe__frase {
+  grid-area: 1 / 1;
+  inline-size: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  visibility: hidden;
+  border-inline-end: 2px solid var(--oro-claro);
+  animation-name: escribe, caret;
+  animation-duration: 16s, 1s;
+  animation-iteration-count: infinite, infinite;
+  animation-timing-function: steps(var(--n), end), steps(1, end);
+  animation-delay: calc(var(--i) * 4s + 1s), 0s;
+}
+
+.escribe__frase:nth-child(1) { --n: 21; --i: 0; }
+.escribe__frase:nth-child(2) { --n: 27; --i: 1; }
+.escribe__frase:nth-child(3) { --n: 26; --i: 2; }
+.escribe__frase:nth-child(4) { --n: 27; --i: 3; }
+
+.hero__resumen {
+  max-inline-size: 34rem;
+  margin-block-start: 0.75rem;
+  color: var(--suave);
+  font-size: 1.0625rem;
+}
+
+.hero__resumen > * + * {
+  margin-block-start: 1em;
+}
+
+.hero__acciones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.9rem;
+  margin-block-start: 1.6rem;
+}
+
+.cifras {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  max-inline-size: 34rem;
+  margin-block-start: 2rem;
+}
+
+.cifras li {
+  display: grid;
+  align-content: start;
+  gap: 0.15rem;
+  padding-inline: 1.25rem;
+  border-inline-start: 1px solid var(--linea);
+}
+
+.cifras li:first-child {
+  padding-inline-start: 0;
+  border-inline-start: 0;
+}
+
+.cifras strong {
+  color: var(--oro-claro);
+  font-family: var(--serif);
+  font-size: 2.25rem;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.cifras span {
+  color: var(--suave);
+  font-size: 0.9375rem;
+  line-height: 1.4;
+}
+
+.hero__bajar {
+  position: absolute;
+  inset-inline-start: 50%;
+  inset-block-end: 1.25rem;
+  z-index: 1;
+  translate: -50% 0;
+  inline-size: 1.6rem;
+  block-size: 2.6rem;
+  border: 2px solid var(--suave);
+  border-radius: 999px;
+  opacity: 0.7;
+}
+
+.hero__bajar:hover {
+  opacity: 1;
+  border-color: var(--oro-claro);
+}
+
+.hero__bajar span {
+  position: absolute;
+  inset-inline-start: 50%;
+  inset-block-start: 0.4rem;
+  inline-size: 0.28rem;
+  block-size: 0.5rem;
+  translate: -50% 0;
+  border-radius: 2px;
+  background: var(--oro-claro);
+  animation: baja 1.8s ease-in-out infinite;
+}
+
+/* 6. Ficha y sello --------------------------------------------------------- */
+.expediente {
+  position: relative;
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.03));
+  border: 1px solid var(--linea-fuerte);
+  border-radius: 16px;
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+  box-shadow:
+    0 30px 80px -30px rgba(0, 0, 0, 0.75),
+    0 0 70px -25px rgba(111, 160, 255, 0.4);
+  animation: entra 1s var(--curva) 0.35s both;
+}
+
+.expediente__barra {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.9rem 1.25rem;
+  border-block-end: 1px solid var(--linea);
+  color: var(--oro-claro);
+  font-size: 0.9375rem;
+  letter-spacing: 0.02em;
+}
+
+.expediente__datos {
+  padding: 0.75rem 1.25rem 2rem;
+}
+
+.expediente__datos > div {
+  display: grid;
+  grid-template-columns: 6.5rem minmax(0, 1fr);
+  gap: 0.15rem 1rem;
+  padding-block: 0.7rem;
+  border-block-end: 1px dashed rgba(255, 255, 255, 0.14);
+}
+
+.expediente__datos > div:last-child {
+  border-block-end: 0;
+}
+
+.expediente dt {
+  color: var(--suave);
+  font-size: 0.9375rem;
+}
+
+.expediente dd {
+  font-family: var(--serif);
+  font-size: 1.0625rem;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+
+.sello {
+  position: absolute;
+  inset-inline-end: 1.25rem;
+  inset-block-end: -1.35rem;
+  padding: 0.5rem 1.1rem;
+  background: rgba(10, 15, 26, 0.92);
+  border: 2px solid var(--oro);
+  border-radius: 6px;
+  box-shadow: 0 0 0 4px rgba(10, 15, 26, 0.92);
+  color: var(--oro-claro);
+  font-family: var(--serif);
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  rotate: -8deg;
+  animation: sello 0.7s cubic-bezier(0.2, 1.5, 0.4, 1) 1.3s both;
+}
+
+/* 7. Botones --------------------------------------------------------------- */
+.boton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.85rem 1.6rem;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.3;
+  text-align: center;
+  text-decoration: none;
+  overflow-wrap: anywhere;
+  transition: transform 0.2s var(--curva), box-shadow 0.25s, border-color 0.25s, background-color 0.25s;
+}
+
+.boton--oro {
+  background: linear-gradient(135deg, #dcb96f, #b8914b);
+  color: var(--sobre-oro);
+}
+
+.boton--oro:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px -10px rgba(201, 164, 92, 0.6);
+}
+
+.boton--linea {
+  background: rgba(255, 255, 255, 0.03);
+  border-color: var(--linea-fuerte);
+  color: var(--texto);
+}
+
+.boton--linea:hover {
+  transform: translateY(-2px);
+  border-color: var(--oro);
+  background: rgba(201, 164, 92, 0.08);
+}
+
+/* 8. Marquesina ------------------------------------------------------------ */
+.marquesina {
+  padding-block: 1.1rem;
+  overflow: hidden;
+  background: var(--fondo-2);
+  border-block: 1px solid var(--linea);
+}
+
+.marquesina__pista {
+  display: flex;
+  inline-size: max-content;
+  animation: marquesina 70s linear infinite;
+}
+
+.marquesina:hover .marquesina__pista {
+  animation-play-state: paused;
+}
+
+.marquesina ul {
+  display: flex;
+  flex-shrink: 0;
+}
+
+.marquesina li {
+  display: flex;
+  align-items: center;
+  color: var(--suave);
+  font-family: var(--serif);
+  font-size: 1.3rem;
+  white-space: nowrap;
+}
+
+.marquesina li::after {
+  content: "§";
+  margin-inline: 2rem;
+  color: var(--oro);
+}
+
+/* 9. Secciones ------------------------------------------------------------- */
+.seccion {
+  position: relative;
+  padding-block: clamp(3.5rem, 8vw, 6rem);
+}
+
+.seccion__titulo {
+  font-size: clamp(2rem, 4.6vw, 3.25rem);
+  letter-spacing: -0.015em;
+  text-wrap: balance;
+}
+
+.seccion__titulo::after {
+  content: "";
+  display: block;
+  inline-size: 3.5rem;
+  block-size: 3px;
+  margin-block-start: 1rem;
+  background: linear-gradient(90deg, var(--oro), var(--azul));
+  border-radius: 2px;
+}
+
+.seccion__intro {
+  max-inline-size: 42rem;
+  margin-block-start: 1.25rem;
+  color: var(--suave);
+  font-size: 1.125rem;
+}
+
+/* 10. Filtro y áreas ------------------------------------------------------- */
+.filtro {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  min-inline-size: 0;
+  margin-block-start: 2.25rem;
+  padding: 0;
+  border: 0;
+}
+
+.filtro__radio {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  margin: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.filtro__tab {
+  display: inline-block;
+  padding: 0.5rem 1.1rem;
+  background: var(--panel);
+  border: 1px solid var(--linea-fuerte);
+  border-radius: 999px;
+  color: var(--texto);
+  font-size: 0.9375rem;
+  line-height: 1.4;
+  cursor: pointer;
+  transition: background-color 0.2s, border-color 0.2s, color 0.2s;
+}
+
+.filtro__tab:hover {
+  border-color: var(--oro);
+  color: var(--oro-claro);
+}
+
+.filtro__radio:checked + .filtro__tab {
+  background: linear-gradient(135deg, #dcb96f, #b8914b);
+  border-color: transparent;
+  color: var(--sobre-oro);
+  font-weight: 600;
+}
+
+.filtro__radio:focus-visible + .filtro__tab {
+  outline: 3px solid var(--oro-claro);
+  outline-offset: 3px;
+}
+
+/* Filtrado por ámbito. Las claves coinciden con AreaEstudio.Ambito. */
+#f-derecho:checked ~ .areas .area:not([data-ambito="derecho"]),
+#f-internacional:checked ~ .areas .area:not([data-ambito="internacional"]),
+#f-transversal:checked ~ .areas .area:not([data-ambito="transversal"]) {
+  display: none;
+}
+
+.areas {
+  flex: 0 0 100%;
+  display: grid;
+  gap: 0.75rem;
+  margin-block-start: 1rem;
+}
+
+.area {
+  background: var(--panel);
+  border: 1px solid var(--linea);
+  border-radius: 12px;
+  transition: background-color 0.25s, border-color 0.25s;
+}
+
+.area:hover {
+  border-color: var(--linea-fuerte);
+}
+
+.area[open] {
+  background: var(--panel-fuerte);
+  border-color: rgba(201, 164, 92, 0.5);
+}
+
+.area__cabecera {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  column-gap: 1.25rem;
+  align-items: center;
+  padding: 1.2rem 1.4rem;
+  list-style: none;
+  cursor: pointer;
+}
+
+.area__cabecera::-webkit-details-marker {
+  display: none;
+}
+
+.area__cabecera::after {
+  content: "";
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  inline-size: 0.6rem;
+  block-size: 0.6rem;
+  border-inline-end: 2px solid var(--oro-claro);
+  border-block-end: 2px solid var(--oro-claro);
+  transform: translateY(-0.15rem) rotate(45deg);
+  transition: transform 0.25s var(--curva);
+}
+
+.area[open] > .area__cabecera::after {
+  transform: translateY(0.1rem) rotate(-135deg);
+}
+
+.area__titulo {
+  font-family: var(--serif);
+  font-size: 1.3125rem;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.area__resumen {
+  color: var(--suave);
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.area__cuerpo {
+  padding: 0 1.4rem 1.5rem;
+  color: var(--texto);
+}
+
+.area__ambito {
+  margin-block-start: 1rem;
+  color: var(--oro-claro);
+  font-size: 0.9rem;
+}
+
+/* 11. Franjas con imagen --------------------------------------------------- */
+.banda {
+  position: relative;
+  display: grid;
+  align-items: center;
+  min-block-size: clamp(22rem, 62vh, 34rem);
+  overflow: hidden;
+  isolation: isolate;
+  background: var(--fondo-2);
+  border-block: 1px solid var(--linea);
+}
+
+.banda__fondo {
+  position: absolute;
+  inset-inline: 0;
+  inset-block: -12%;
+  z-index: -1;
+}
+
+/* Para usar fotografías reales: guarda el archivo en static/img/ y cambia la
+   ruta url() de estas dos reglas (mantén el degradado para conservar la
+   legibilidad del texto). */
+.banda--juzgado .banda__fondo {
+  background:
+    linear-gradient(90deg, rgba(10, 15, 26, 0.95), rgba(10, 15, 26, 0.55) 55%, rgba(10, 15, 26, 0.25)),
+    url("../img/juzgado.svg") center bottom / cover no-repeat;
+}
+
+.banda--mundo .banda__fondo {
+  background:
+    linear-gradient(90deg, rgba(10, 15, 26, 0.9), rgba(10, 15, 26, 0.2) 65%),
+    url("../img/mundo.svg") right 6% center / min(48rem, 95%) no-repeat;
+}
+
+.banda__lema {
+  max-inline-size: 30ch;
+  font-family: var(--serif);
+  font-size: clamp(1.9rem, 4.6vw, 3.5rem);
+  font-weight: 600;
+  line-height: 1.18;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+  color: var(--oro-claro);
+  background: linear-gradient(100deg, var(--oro-claro), #ffffff 60%, var(--azul-claro));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* 12. Enfoque y cronología ------------------------------------------------- */
+.principios {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 2.75rem clamp(2rem, 5vw, 4rem);
+  margin-block-start: 3rem;
+}
+
+.principio {
+  padding-block-start: 1.25rem;
+  border-block-start: 2px solid var(--oro);
+  color: var(--suave);
+}
+
+.principio__titulo {
+  margin-block-end: 0.6rem;
+  color: var(--texto);
+  font-size: 1.4rem;
+}
+
+.grupo {
+  margin-block-start: 3rem;
+}
+
+.grupo__titulo {
+  margin-block-end: 1.75rem;
+  color: var(--oro-claro);
+  font-size: 1.4rem;
+}
+
+.cronologia {
+  position: relative;
+  border-inline-start: 2px solid var(--linea);
+}
+
+.cronologia::before {
+  content: "";
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: -2px;
+  inline-size: 2px;
+  background: linear-gradient(var(--oro), var(--azul));
+  transform-origin: top;
+}
+
+.hito {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(8rem, 12rem) minmax(0, 1fr);
+  gap: 0.25rem 1.5rem;
+  padding: 0 0 2.25rem 1.9rem;
+}
+
+.hito:last-child {
+  padding-block-end: 0;
+}
+
+.hito::before {
+  content: "";
+  position: absolute;
+  inset-inline-start: -0.45rem;
+  inset-block-start: 0.6rem;
+  inline-size: 0.8rem;
+  block-size: 0.8rem;
+  background: var(--oro);
+  border: 2px solid var(--fondo);
+  border-radius: 50%;
+  box-shadow: 0 0 0 4px rgba(201, 164, 92, 0.2);
+}
+
+.hito__periodo {
+  align-self: start;
+  justify-self: start;
+  color: var(--suave);
+  font-size: 0.9375rem;
+  line-height: 1.9;
+}
+
+.hito__titulo {
+  font-size: 1.35rem;
+  line-height: 1.35;
+}
+
+.hito__institucion {
+  margin-block-start: 0.15rem;
+  color: var(--texto);
+}
+
+.hito__descripcion {
+  margin-block-start: 0.5rem;
+  color: var(--suave);
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+/* 13. Contacto y pie ------------------------------------------------------- */
+.seccion--contacto {
+  background: radial-gradient(48rem 24rem at 50% 100%, rgba(201, 164, 92, 0.13), transparent 70%);
+}
+
+.contacto__acciones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-block-start: 2.25rem;
+}
+
+.contacto__lugar {
+  margin-block-start: 1.5rem;
+  color: var(--suave);
+}
+
+.pie {
+  border-block-start: 1px solid var(--linea);
+  background: var(--fondo);
+  color: var(--suave);
+  font-size: 0.9375rem;
+  line-height: 1.65;
+}
+
+.pie__interior {
+  padding-block: 3rem 4rem;
+}
+
+.pie__titulo {
+  margin-block-end: 1rem;
+  color: var(--texto);
+  font-size: 1.25rem;
+}
+
+.pie__copy {
+  margin-block-start: 1.75rem;
+  font-size: 0.875rem;
+}
+
+/* 14a. Fotogramas ---------------------------------------------------------- */
+@keyframes entra {
+  from { opacity: 0; transform: translateY(1.5rem); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes gradiente {
+  to { background-position: 100% 0; }
+}
+
+@keyframes pulso {
+  0% { box-shadow: 0 0 0 0 rgba(240, 217, 160, 0.55); }
+  70%, 100% { box-shadow: 0 0 0 0.7rem rgba(240, 217, 160, 0); }
+}
+
+@keyframes giro {
+  to { rotate: 360deg; }
+}
+
+@keyframes baja {
+  0% { opacity: 0; transform: translateY(0); }
+  30% { opacity: 1; }
+  100% { opacity: 0; transform: translateY(1rem); }
+}
+
+@keyframes escribe {
+  0% { inline-size: 0; visibility: visible; }
+  10% { inline-size: calc(var(--n) * 1ch); visibility: visible; }
+  20% { inline-size: calc(var(--n) * 1ch); visibility: visible; }
+  24% { inline-size: 0; visibility: visible; }
+  25%, 100% { inline-size: 0; visibility: hidden; }
+}
+
+@keyframes caret {
+  50% { border-inline-end-color: transparent; }
+}
+
+@keyframes sello {
+  from { opacity: 0; scale: 2.4; rotate: -22deg; }
+  to { opacity: 1; scale: 1; rotate: -8deg; }
+}
+
+@keyframes marquesina {
+  to { transform: translateX(-50%); }
+}
+
+/* 14b. Movimiento ligado al scroll (mejora progresiva) -------------------- */
+@supports (animation-timeline: view()) {
+  @keyframes revela {
+    from { opacity: 0; transform: translateY(3rem); }
+    to { opacity: 1; transform: none; }
+  }
+
+  @keyframes revela-escala {
+    from { opacity: 0; transform: translateY(2rem) scale(0.94); }
+    to { opacity: 1; transform: none; }
+  }
+
+  @keyframes parallax {
+    from { transform: translateY(-8%); }
+    to { transform: translateY(8%); }
+  }
+
+  @keyframes traza {
+    from { transform: scaleY(0); }
+    to { transform: scaleY(1); }
+  }
+
+  @keyframes progreso {
+    from { transform: scaleY(0); }
+    to { transform: scaleY(1); }
+  }
+
+  @keyframes cabecera-scroll {
+    to {
+      background-color: rgba(10, 15, 26, 0.88);
+      border-block-end-color: var(--linea);
+    }
+  }
+
+  @keyframes cabecera-compacta {
+    to { padding-block: 0.6rem; }
+  }
+
+  @keyframes hero-sale {
+    to { opacity: 0; transform: translateY(-3rem) scale(0.98); }
+  }
+
+  @keyframes juzgado-sube {
+    to { transform: translateY(14%); opacity: 0; }
+  }
+
+  .progreso {
+    position: fixed;
+    inset-block-start: 0;
+    inset-inline-end: 0;
+    z-index: 60;
+    display: block;
+    inline-size: 4px;
+    block-size: 100vh;
+    background: linear-gradient(var(--azul), var(--oro-claro));
+    border-radius: 0 0 0 4px;
+    transform-origin: top;
+    animation: progreso linear both;
+    animation-timeline: scroll(root);
+  }
+
+  .cabecera {
+    animation: cabecera-scroll linear both;
+    animation-timeline: scroll(root);
+    animation-range: 0 140px;
+  }
+
+  .cabecera__interior {
+    animation: cabecera-compacta linear both;
+    animation-timeline: scroll(root);
+    animation-range: 0 140px;
+  }
+
+  .hero__interior {
+    animation: hero-sale linear both;
+    animation-timeline: scroll(root);
+    animation-range: 12vh 80vh;
+  }
+
+  .hero__juzgado {
+    animation: juzgado-sube linear both;
+    animation-timeline: scroll(root);
+    animation-range: 0 100vh;
+  }
+
+  .revela {
+    animation: revela 1s var(--curva) both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 55%;
+  }
+
+  .revela--escala {
+    animation-name: revela-escala;
+    animation-range: entry 0% cover 38%;
+  }
+
+  .principio:nth-child(2) { animation-range: entry 8% entry 63%; }
+  .principio:nth-child(3) { animation-range: entry 16% entry 71%; }
+  .principio:nth-child(4) { animation-range: entry 24% entry 79%; }
+
+  .banda__fondo {
+    animation: parallax linear both;
+    animation-timeline: view();
+    animation-range: cover;
+  }
+
+  .cronologia::before {
+    animation: traza linear both;
+    animation-timeline: view();
+    animation-range: entry 10% cover 65%;
+  }
+}
+
+/* 14c. Adaptación a pantallas --------------------------------------------- */
+@media (max-width: 62em) {
+  .hero {
+    min-block-size: 0;
+  }
+
+  .hero__interior {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .hero__mundo {
+    inset-block-start: 6rem;
+    inset-inline-end: -12rem;
+    translate: 0 0;
+    opacity: 0.35;
+  }
+
+  .expediente {
+    max-inline-size: 36rem;
+    margin-block-end: 1.5rem;
+  }
+
+  .hero__bajar {
+    display: none;
+  }
+}
+
+@media (max-width: 40em) {
+  .principios {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  body {
+    font-size: 1rem;
+  }
+
+  .cabecera__interior {
+    padding-block: 0.75rem;
+  }
+
+  .marca__nombre {
+    font-size: 1.05rem;
+  }
+
+  .menu ul {
+    gap: 1.25rem;
+  }
+
+  .cifras {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.25rem;
+  }
+
+  .cifras li,
+  .cifras li:first-child {
+    padding-inline: 0;
+    border-inline-start: 0;
+  }
+
+  .menu li:first-child {
+    display: none;
+  }
+
+  .expediente__datos > div,
+  .hito {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .hito {
+    padding-inline-start: 1.4rem;
+  }
+
+  .hito__periodo {
+    line-height: 1.5;
+  }
+
+  .area__cabecera {
+    padding-inline: 1rem;
+  }
+
+  .area__cuerpo {
+    padding-inline: 1rem;
+  }
+
+  .sello {
+    inset-inline-end: 0.75rem;
+  }
+}
+
+/* 14d. Preferencias del usuario ------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  .hero__degradado {
+    background-position: 45% 0;
+  }
+
+  .escribe__frase:first-child {
+    inline-size: auto;
+    visibility: visible;
+    border-inline-end-color: transparent;
+  }
+
+  .escribe__frase:not(:first-child) {
+    display: none;
+  }
+
+  .progreso {
+    display: none;
+  }
+}
+
+/* 14e. Impresión ----------------------------------------------------------- */
+@media print {
+  :root {
+    --fondo: #ffffff;
+    --fondo-2: #ffffff;
+    --panel: transparent;
+    --panel-fuerte: transparent;
+    --linea: #cccccc;
+    --linea-fuerte: #999999;
+    --texto: #111111;
+    --suave: #333333;
+    --oro: #7a5c2e;
+    --oro-claro: #5c4420;
+    --azul: #1f3a6b;
+    --azul-claro: #1f3a6b;
+  }
+
+  .progreso,
+  .cabecera,
+  .hero__fondo,
+  .hero__bajar,
+  .marquesina,
+  .banda,
+  .filtro__radio,
+  .filtro__tab,
+  .salto {
+    display: none !important;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    -webkit-text-fill-color: currentColor !important;
+    background-image: none !important;
+  }
+
+  .escribe {
+    display: none;
+  }
+
+  .hero {
+    min-block-size: 0;
+  }
+
+  .hero__interior {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .seccion {
+    padding-block: 1.5rem;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+}

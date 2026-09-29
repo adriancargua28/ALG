@@ -1,0 +1,18 @@
+{% load static %}<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <meta name="theme-color" content="#0A0F1A">
+  <title>{% block title %}Adriana Lara Gutiérrez{% endblock %}</title>
+  <meta name="description" content="{% block description %}Perfil académico en Derecho y Relaciones Internacionales de Adriana Lara Gutiérrez.{% endblock %}">
+  <link rel="icon" type="image/svg+xml" href="{% static 'img/favicon.svg' %}">
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+  <div class="progreso" aria-hidden="true"></div>
+  <a class="salto" href="#contenido">Saltar al contenido</a>
+{% block content %}{% endblock %}
+</body>
+</html>

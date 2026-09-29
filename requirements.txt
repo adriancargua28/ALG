@@ -1,0 +1,4 @@
+# Compatible con Python 3.9 a 3.12 en Linux, macOS y Windows.
+Django>=4.2,<5.0
+whitenoise>=6.6,<7.0
+gunicorn>=21.2,<24.0; sys_platform != "win32"

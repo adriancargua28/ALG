@@ -1,0 +1,226 @@
+{% extends "base.html" %}
+
+{% block title %}{{ perfil.nombre_completo }} | Derecho y Relaciones Internacionales{% endblock %}
+{% block description %}{{ perfil.nombre_completo }}: análisis jurídico con visión internacional. Derecho, Derecho de la Unión Europea y Relaciones Internacionales.{% endblock %}
+
+{% block content %}
+
+<header class="cabecera">
+  <div class="cabecera__interior contenedor">
+    <a class="marca" href="#inicio" aria-label="{{ perfil.nombre_completo }}, ir al inicio">
+      <span class="marca__sigla">AL</span>
+      <span class="marca__nombre">{{ perfil.nombre_completo }}</span>
+    </a>
+    <nav class="menu" aria-label="Secciones de la página">
+      <ul>
+        <li><a href="#inicio">Inicio</a></li>
+        <li><a href="#areas">Áreas</a></li>
+        {% if principios %}<li><a href="#enfoque">Enfoque</a></li>{% endif %}
+        <li><a href="#trayectoria">Trayectoria</a></li>
+        <li><a href="#contacto">Contacto</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="contenido">
+
+  <!-- ===================== PORTADA ===================== -->
+  <section id="inicio" class="hero" aria-labelledby="titulo-principal">
+    <div class="hero__fondo" aria-hidden="true">
+      <div class="hero__malla"></div>
+      <div class="hero__mundo"></div>
+      <div class="hero__juzgado"></div>
+    </div>
+
+    <div class="hero__interior contenedor">
+      <div class="hero__texto">
+        <p class="pildora"><span class="pildora__punto" aria-hidden="true"></span>Derecho y Relaciones Internacionales</p>
+
+        <h1 id="titulo-principal" class="hero__nombre">
+          <span class="hero__saludo">Hola, soy</span>
+          <span class="hero__degradado">{{ perfil.nombre_completo }}</span>
+        </h1>
+
+        <p class="escribe" aria-label="Ámbitos de trabajo: Derecho internacional, Derecho de la Unión Europea, Relaciones internacionales y análisis jurídico comparado">
+          <span class="escribe__frase" aria-hidden="true">Derecho internacional</span>
+          <span class="escribe__frase" aria-hidden="true">Derecho de la Unión Europea</span>
+          <span class="escribe__frase" aria-hidden="true">Relaciones internacionales</span>
+          <span class="escribe__frase" aria-hidden="true">Análisis jurídico comparado</span>
+        </p>
+
+        {% if perfil.presentacion %}
+        <div class="hero__resumen">{{ perfil.presentacion|linebreaks }}</div>
+        {% endif %}
+
+        <div class="hero__acciones">
+          <a class="boton boton--oro" href="#areas">Ver áreas de interés</a>
+          <a class="boton boton--linea" href="#contacto">Contacto</a>
+        </div>
+
+        <ul class="cifras">
+          <li><strong>2</strong><span>ámbitos profesionales</span></li>
+          <li><strong>{{ areas|length }}</strong><span>áreas de interés</span></li>
+          <li><strong>3</strong><span>niveles normativos</span></li>
+        </ul>
+      </div>
+
+      <aside class="expediente" aria-label="Ficha profesional">
+        <div class="expediente__barra">
+          <svg class="expediente__sello-icono" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M12 6v12M7 9h10M7 9l-2 4a2.5 2.5 0 0 0 4 0zM17 9l-2 4a2.5 2.5 0 0 0 4 0z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+          <span>Ficha profesional</span>
+        </div>
+        <dl class="expediente__datos">
+          <div><dt>Nombre</dt><dd>{{ perfil.nombre_completo }}</dd></div>
+          <div><dt>Perfil</dt><dd>{{ perfil.titular }}</dd></div>
+          <div><dt>Ámbitos</dt><dd>Derecho · Derecho de la Unión Europea · Relaciones Internacionales</dd></div>
+          <div><dt>Colegiada</dt><dd>{% if perfil.colegiada_pendiente %}<span class="es-provisional">{{ perfil.numero_colegiada }}</span>{% else %}{{ perfil.numero_colegiada }}{% endif %}</dd></div>
+          {% if perfil.colegio_profesional %}<div><dt>Colegio</dt><dd>{{ perfil.colegio_profesional }}</dd></div>{% endif %}
+          {% if perfil.idiomas %}<div><dt>Idiomas</dt><dd>{{ perfil.idiomas }}</dd></div>{% endif %}
+          {% if perfil.ciudad %}<div><dt>Ubicación</dt><dd>{{ perfil.ciudad }}</dd></div>{% endif %}
+        </dl>
+        {% if perfil.situacion %}<p class="sello" aria-label="Situación: {{ perfil.situacion }}"><span>{{ perfil.situacion }}</span></p>{% endif %}
+      </aside>
+    </div>
+
+    <a class="hero__bajar" href="#areas" aria-label="Ir a las áreas de interés profesional"><span></span></a>
+  </section>
+
+  <!-- ===================== MARQUESINA ===================== -->
+  {% if areas %}
+  <div class="marquesina" aria-hidden="true">
+    <div class="marquesina__pista">
+      <ul>{% for area in areas %}<li>{{ area.titulo }}</li>{% endfor %}</ul>
+      <ul>{% for area in areas %}<li>{{ area.titulo }}</li>{% endfor %}</ul>
+    </div>
+  </div>
+  {% endif %}
+
+  <!-- ===================== ÁREAS ===================== -->
+  <section id="areas" class="seccion" aria-labelledby="titulo-areas">
+    <div class="contenedor">
+      <h2 id="titulo-areas" class="seccion__titulo revela">Áreas de interés profesional</h2>
+      <p class="seccion__intro revela">Materias donde confluyen el Derecho y las Relaciones Internacionales. Filtra por ámbito y abre cada área para ver su alcance.</p>
+
+      {% if areas %}
+      <fieldset class="filtro revela">
+        <legend class="solo-lector">Filtrar áreas por ámbito</legend>
+
+        <input class="filtro__radio" type="radio" name="ambito" id="f-todas" value="todas" checked>
+        <label class="filtro__tab" for="f-todas">Todas</label>
+        {% for clave, etiqueta in ambitos %}
+        <input class="filtro__radio" type="radio" name="ambito" id="f-{{ clave }}" value="{{ clave }}">
+        <label class="filtro__tab" for="f-{{ clave }}">{{ etiqueta }}</label>
+        {% endfor %}
+
+        <div class="areas">
+          {% for area in areas %}
+          <details class="area revela" name="areas" data-ambito="{{ area.ambito }}">
+            <summary class="area__cabecera">
+              <span class="area__titulo">{{ area.titulo }}</span>
+              <span class="area__resumen">{{ area.resumen }}</span>
+            </summary>
+            <div class="area__cuerpo">
+              {% if area.descripcion %}<div class="prose">{{ area.descripcion|linebreaks }}</div>{% endif %}
+              <p class="area__ambito">{{ area.get_ambito_display }}</p>
+            </div>
+          </details>
+          {% endfor %}
+        </div>
+      </fieldset>
+      {% else %}
+      <p class="vacio">Las áreas de interés se publicarán próximamente.</p>
+      {% endif %}
+    </div>
+  </section>
+
+  <!-- ===================== FRANJA: JUZGADO ===================== -->
+  <section class="banda banda--juzgado" aria-label="Lema profesional">
+    <div class="banda__fondo" aria-hidden="true"></div>
+    <div class="contenedor">
+      <p class="banda__lema revela revela--escala">{{ perfil.lema_juzgado }}</p>
+    </div>
+  </section>
+
+  <!-- ===================== ENFOQUE ===================== -->
+  {% if principios %}
+  <section id="enfoque" class="seccion" aria-labelledby="titulo-enfoque">
+    <div class="contenedor">
+      <h2 id="titulo-enfoque" class="seccion__titulo revela">Enfoque de trabajo</h2>
+      <ul class="principios">
+        {% for principio in principios %}
+        <li class="principio revela">
+          <h3 class="principio__titulo">{{ principio.titulo }}</h3>
+          <p>{{ principio.texto }}</p>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </section>
+  {% endif %}
+
+  <!-- ===================== TRAYECTORIA ===================== -->
+  <section id="trayectoria" class="seccion" aria-labelledby="titulo-trayectoria">
+    <div class="contenedor">
+      <h2 id="titulo-trayectoria" class="seccion__titulo revela">Formación y trayectoria</h2>
+
+      {% for grupo in grupos %}
+      <div class="grupo">
+        <h3 class="grupo__titulo revela">{{ grupo.etiqueta }}</h3>
+        <ol class="cronologia">
+          {% for hito in grupo.items %}
+          <li class="hito revela">
+            <p class="hito__periodo{% if hito.periodo_provisional %} es-provisional{% endif %}">{{ hito.periodo }}</p>
+            <div class="hito__detalle">
+              <h4 class="hito__titulo">{{ hito.titulo }}</h4>
+              {% if hito.institucion %}<p class="hito__institucion{% if hito.institucion_provisional %} es-provisional{% endif %}">{{ hito.institucion }}</p>{% endif %}
+              {% if hito.descripcion %}<p class="hito__descripcion{% if hito.descripcion_provisional %} es-provisional{% endif %}">{{ hito.descripcion }}</p>{% endif %}
+            </div>
+          </li>
+          {% endfor %}
+        </ol>
+      </div>
+      {% empty %}
+      <p class="vacio">La formación y la trayectoria se publicarán próximamente.</p>
+      {% endfor %}
+    </div>
+  </section>
+
+  <!-- ===================== FRANJA: INTERNACIONAL ===================== -->
+  <section class="banda banda--mundo" aria-label="Lema internacional">
+    <div class="banda__fondo" aria-hidden="true"></div>
+    <div class="contenedor">
+      <p class="banda__lema revela revela--escala">{{ perfil.lema_internacional }}</p>
+    </div>
+  </section>
+
+  <!-- ===================== CONTACTO ===================== -->
+  <section id="contacto" class="seccion seccion--contacto" aria-labelledby="titulo-contacto">
+    <div class="contenedor">
+      <h2 id="titulo-contacto" class="seccion__titulo revela">Contacto</h2>
+
+      {% if perfil.tiene_contacto %}
+      <div class="contacto revela">
+        <div class="contacto__acciones">
+          {% if perfil.email %}<a class="boton boton--oro" href="mailto:{{ perfil.email }}">{{ perfil.email }}</a>{% endif %}
+          {% if perfil.telefono %}<a class="boton boton--linea" href="tel:{{ perfil.telefono|cut:' ' }}">{{ perfil.telefono }}</a>{% endif %}
+          {% if perfil.linkedin_url %}<a class="boton boton--linea" href="{{ perfil.linkedin_url }}" rel="noopener noreferrer" target="_blank">Perfil profesional</a>{% endif %}
+        </div>
+        {% if perfil.ciudad %}<p class="contacto__lugar">{{ perfil.ciudad }}</p>{% endif %}
+      </div>
+      {% else %}
+      <p class="vacio revela">Los datos de contacto se publicarán próximamente.</p>
+      {% endif %}
+    </div>
+  </section>
+
+</main>
+
+<footer id="aviso" class="pie" aria-labelledby="titulo-aviso">
+  <div class="contenedor pie__interior">
+    <h2 id="titulo-aviso" class="pie__titulo">Aviso legal y deontología</h2>
+    <div class="prose">{{ perfil.aviso_legal|linebreaks }}</div>
+    <p class="pie__copy">© {% now "Y" %} {{ perfil.nombre_completo }}. Todos los derechos reservados.</p>
+  </div>
+</footer>
+{% endblock %}

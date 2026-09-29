@@ -1,0 +1,167 @@
+[
+  {
+    "model": "portal.perfilprofesional",
+    "pk": 1,
+    "fields": {
+      "nombre_completo": "Adriana Lara Gutiérrez",
+      "titular": "Perfil Académico en Derecho y Relaciones Internacionales",
+      "presentacion": "Análisis jurídico con visión internacional. Mi enfoque combina rigor técnico, claridad expositiva y respeto a los principios deontológicos de la profesión, en asuntos donde confluyen el ordenamiento nacional, el europeo y el internacional.",
+      "numero_colegiada": "[Nº Colegiada pendiente de colegiación / Editable]",
+      "colegio_profesional": "",
+      "idiomas": "",
+      "ciudad": "",
+      "email": "",
+      "telefono": "",
+      "linkedin_url": "",
+      "aviso_legal": "La información publicada en este sitio tiene carácter exclusivamente informativo y académico. No constituye asesoramiento jurídico ni establece relación profesional alguna entre abogado y cliente.\n\nEl contenido describe un perfil académico. Los datos de colegiación se publicarán únicamente cuando exista la correspondiente inscripción en el colegio profesional, y las titulaciones se indicarán solo una vez acreditadas.",
+      "actualizado": "2026-09-29T09:00:00Z",
+      "situacion": "Próxima graduación",
+      "lema_juzgado": "El rigor jurídico se construye con fuentes, método y criterio.",
+      "lema_internacional": "Un mismo asunto, varios ordenamientos: todo análisis empieza por saber cuál se aplica."
+    }
+  },
+  {
+    "model": "portal.areaestudio",
+    "pk": 1,
+    "fields": {
+      "ambito": "internacional",
+      "titulo": "Derecho internacional público",
+      "slug": "derecho-internacional-publico",
+      "resumen": "Fuentes, sujetos y responsabilidad internacional de los Estados.",
+      "descripcion": "Estudio de las fuentes del ordenamiento internacional, de la subjetividad internacional y de la responsabilidad de los Estados por hechos ilícitos.\n\nIncluye los mecanismos de solución pacífica de controversias y el papel de la jurisprudencia internacional en la formación de la norma.",
+      "orden": 10,
+      "publicada": true
+    }
+  },
+  {
+    "model": "portal.areaestudio",
+    "pk": 2,
+    "fields": {
+      "ambito": "internacional",
+      "titulo": "Organizaciones internacionales y diplomacia",
+      "slug": "organizaciones-internacionales-diplomacia",
+      "resumen": "Marco institucional de la cooperación entre Estados.",
+      "descripcion": "Análisis del funcionamiento de las organizaciones internacionales, de su personalidad jurídica y de sus procesos de decisión.\n\nComprende el estudio del derecho diplomático y consular como base de las relaciones entre Estados.",
+      "orden": 20,
+      "publicada": true
+    }
+  },
+  {
+    "model": "portal.areaestudio",
+    "pk": 3,
+    "fields": {
+      "ambito": "derecho",
+      "titulo": "Derecho de la Unión Europea",
+      "slug": "derecho-union-europea",
+      "resumen": "Articulación entre el ordenamiento europeo y el nacional.",
+      "descripcion": "Estudio del sistema institucional de la Unión, de las fuentes del Derecho europeo y de los principios de primacía y efecto directo.\n\nAtención a la relación entre el Derecho de la Unión y los ordenamientos de los Estados miembros.",
+      "orden": 30,
+      "publicada": true
+    }
+  },
+  {
+    "model": "portal.areaestudio",
+    "pk": 4,
+    "fields": {
+      "ambito": "derecho",
+      "titulo": "Derecho internacional privado",
+      "slug": "derecho-internacional-privado",
+      "resumen": "Relaciones jurídicas con elemento extranjero.",
+      "descripcion": "Análisis de las reglas de competencia judicial internacional, de determinación de la ley aplicable y de reconocimiento y ejecución de resoluciones extranjeras.\n\nEstudio de los instrumentos europeos e internacionales que uniformizan estas materias.",
+      "orden": 40,
+      "publicada": true
+    }
+  },
+  {
+    "model": "portal.areaestudio",
+    "pk": 5,
+    "fields": {
+      "ambito": "derecho",
+      "titulo": "Extranjería y nacionalidad",
+      "slug": "extranjeria-nacionalidad",
+      "resumen": "Régimen jurídico de la movilidad y de la pertenencia a un Estado.",
+      "descripcion": "Estudio del marco normativo de la entrada, residencia y trabajo de personas extranjeras y de la adquisición y pérdida de la nacionalidad.\n\nConsideración de los estándares internacionales y europeos que condicionan la normativa interna.",
+      "orden": 50,
+      "publicada": true
+    }
+  },
+  {
+    "model": "portal.areaestudio",
+    "pk": 6,
+    "fields": {
+      "ambito": "transversal",
+      "titulo": "Investigación y análisis jurídico comparado",
+      "slug": "analisis-juridico-comparado",
+      "resumen": "Método de trabajo aplicado a todas las áreas.",
+      "descripcion": "Lectura crítica de normas y jurisprudencia, comparación entre ordenamientos y redacción de informes jurídicos con rigor en las fuentes y en la cita.\n\nEl enfoque comparado permite identificar convergencias y diferencias entre sistemas jurídicos.",
+      "orden": 60,
+      "publicada": true
+    }
+  },
+  {
+    "model": "portal.hitoacademico",
+    "pk": 1,
+    "fields": {
+      "categoria": "formacion",
+      "titulo": "Estudios de Derecho",
+      "institucion": "[Universidad / Editable]",
+      "periodo": "[Periodo / Editable]",
+      "descripcion": "[Situación académica y titulación, solo si está acreditada / Editable]",
+      "orden": 10,
+      "publicado": true
+    }
+  },
+  {
+    "model": "portal.hitoacademico",
+    "pk": 2,
+    "fields": {
+      "categoria": "formacion",
+      "titulo": "Estudios de Relaciones Internacionales",
+      "institucion": "[Universidad / Editable]",
+      "periodo": "[Periodo / Editable]",
+      "descripcion": "[Situación académica y titulación, solo si está acreditada / Editable]",
+      "orden": 20,
+      "publicado": true
+    }
+  },
+  {
+    "model": "portal.principio",
+    "pk": 1,
+    "fields": {
+      "titulo": "Rigor en las fuentes",
+      "texto": "Cada conclusión se apoya en normas, jurisprudencia y doctrina verificables, citadas con precisión.",
+      "orden": 10,
+      "publicado": true
+    }
+  },
+  {
+    "model": "portal.principio",
+    "pk": 2,
+    "fields": {
+      "titulo": "Visión internacional",
+      "texto": "El análisis considera cómo interactúan el ordenamiento nacional, el europeo y el internacional.",
+      "orden": 20,
+      "publicado": true
+    }
+  },
+  {
+    "model": "portal.principio",
+    "pk": 3,
+    "fields": {
+      "titulo": "Claridad en la redacción",
+      "texto": "Los escritos se plantean para ser entendidos: estructura ordenada, conclusiones expresas y lenguaje preciso.",
+      "orden": 30,
+      "publicado": true
+    }
+  },
+  {
+    "model": "portal.principio",
+    "pk": 4,
+    "fields": {
+      "titulo": "Compromiso deontológico",
+      "texto": "Secreto profesional, independencia y lealtad como criterios que orientan cualquier trabajo jurídico.",
+      "orden": 40,
+      "publicado": true
+    }
+  }
+]
